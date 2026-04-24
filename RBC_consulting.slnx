@@ -1,0 +1,28 @@
+<Solution>
+
+  <Folder Name="/Docker/">
+    <File Path=".env" />
+    <File Path="docker-compose.yml" />
+    <File Path=".dockerignore" />
+  </Folder>
+  <Folder Name="/Docker/Database/">
+    <File Path="schema.sql" />
+    <File Path="seed.sql" />
+  </Folder>
+  <Folder Name="/Documentation/">
+    <File Path="README.md" />
+    <File Path="REFERENCES.md" />
+  </Folder>
+  <File Path=".gitignore" />
+  <Folder Name="/src/">
+    <File Path="Directory.Packages.props" />
+    <Project Path="src/RBC_consulting.Api/RBC_consulting.csproj" />
+    <Project Path="src/RBC_consulting.Application/RBC_consulting.Application.csproj" />
+    <Project Path="src/RBC_consulting.Contracts/RBC_consulting.Contracts.csproj" />
+    <Project Path="src/RBC_consulting.Domain/RBC_consulting.Domain.csproj" />
+    <Project Path="src/RBC_consulting.Infrastructure/RBC_consulting.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Tests/">
+    <Project Path="Architecture.Tests/Architecture.Tests.csproj" Id="4462a031-3e9a-425d-9462-114792f1130e" />
+  </Folder>
+</Solution>

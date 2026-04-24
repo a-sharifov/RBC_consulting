@@ -1,0 +1,27 @@
+Serilog:
+    Using: [Serilog.Sinks.Console, Serilog.Sinks.Grafana.Loki]
+    MinimumLevel: 
+      Default: Debug
+      Override:
+        Microsoft: Information
+    WriteTo:
+    - Name: Console
+    - Name: GrafanaLoki
+      Args:
+        uri: http://loki:3100
+        labels:
+          - key: app
+            value: trendline-api
+          - key: environment
+            value: Development
+    Enrich: [FromLogContext, WithMachineName, WithProcessId]
+
+FileSettings:
+  UploadFolderName: uploads
+  AllowedExtensions:
+    - .pdf
+    - .jpg
+    - .jpeg
+    - .png
+
+AllowedHosts: '*'
