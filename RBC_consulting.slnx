@@ -23,6 +23,6 @@
     <Project Path="src/RBC_consulting.Infrastructure/RBC_consulting.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/src/Tests/">
-    <Project Path="Architecture.Tests/Architecture.Tests.csproj" Id="4462a031-3e9a-425d-9462-114792f1130e" />
+    <Project Path="src/Tests/Architecture.Tests/Architecture.Tests.csproj" />
   </Folder>
 </Solution>
