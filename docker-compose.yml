@@ -46,8 +46,8 @@ services:
 
   webapp:
     build:
-      context: src
-      dockerfile: RBC_consulting.Api/Dockerfile
+      context: .
+      dockerfile: src/RBC_consulting.Api/Dockerfile
     container_name: webapp
     env_file:
       - .env

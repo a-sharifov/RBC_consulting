@@ -11,22 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 10.0.x
+        dotnet-quality: preview
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore RBC_consulting.slnx
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build RBC_consulting.slnx --no-restore
     - name: Test with coverage
-      run: dotnet test --no-build --collect:"XPlat Code Coverage"
+      run: dotnet test RBC_consulting.slnx --no-build --collect:"XPlat Code Coverage"
     - name: Publish code coverage
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v4
       with:
         files: ./coverage.cobertura.xml
         flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: true
-    
