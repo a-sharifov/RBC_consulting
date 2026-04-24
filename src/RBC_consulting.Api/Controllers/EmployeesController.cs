@@ -6,13 +6,13 @@ using RBC_consulting.Application.Employees.Commands.Delete;
 using RBC_consulting.Application.Employees.Commands.Update;
 using RBC_consulting.Application.Employees.Commands.UploadFile;
 using RBC_consulting.Application.Employees.Commands.ClearFile;
-using RBC_consulting.Application.Employees.Queries.GetAllEmployees;
 using RBC_consulting.Application.Employees.Queries.GetById;
 using RBC_consulting.Application.Employees.Queries.GetStatistics;
 using RBC_consulting.Application.Employees.Queries.GetFile;
 using RBC_consulting.Contracts.Pdf;
 using RBC_consulting.Application.Employees.Commands.Create;
 using RBC_consulting.Application.Employees.Queries.GetPaged;
+using RBC_consulting.Application.Employees.Queries.GetAll;
 
 namespace RBC_consulting.Controllers;
 
