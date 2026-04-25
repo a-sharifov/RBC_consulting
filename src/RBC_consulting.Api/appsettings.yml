@@ -4,6 +4,8 @@ Serilog:
       Default: Debug
       Override:
         Microsoft: Information
+      WriteTo:
+      - Name: Console
     Enrich: [FromLogContext, WithMachineName, WithProcessId]
 
 FileSettings:

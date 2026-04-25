@@ -2,8 +2,8 @@
 
   <Folder Name="/Docker/">
     <File Path=".env" />
-    <File Path="docker-compose.yml" />
     <File Path=".dockerignore" />
+    <File Path="docker-compose.test.yml" />
   </Folder>
   <Folder Name="/Docker/Database/">
     <File Path="schema.sql" />
