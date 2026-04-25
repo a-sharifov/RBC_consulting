@@ -12,8 +12,6 @@ services:
     - "1433:1433"
     volumes:
     - sqlserver_data:/var/opt/mssql
-    networks:
-    - rbc_network
 
   mssql-init:
     image: mcr.microsoft.com/mssql-tools
@@ -22,8 +20,8 @@ services:
       sqlserver:
         condition: service_started
     volumes:
-    - ./schema.sql:/scripts/schema.sql
-    - ./seed.sql:/scripts/seed.sql
+    - ./configs/test/sql/schema.sql:/scripts/schema.sql
+    - ./configs/test/sql/seed.sql:/scripts/seed.sql
     environment:
     - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
     entrypoint: /bin/bash -c "
@@ -41,13 +39,11 @@ services:
         sleep 2;
       done;
       echo 'Failed to connect to SQL Server'; exit 1;"
-    networks:
-      - rbc_network
 
   webapp:
     build:
       context: .
-      dockerfile: src/RBC_consulting.Api/Dockerfile
+      dockerfile: src/webapp/WebApp/Dockerfile
     container_name: webapp
     env_file:
     - .env
@@ -57,10 +53,7 @@ services:
     - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=${DB_NAME};User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;
     ports:
     - "5000:80"
-    - "5001:443"
     depends_on: [sqlserver, mssql-init]
-    networks:
-    - rbc_network
     volumes:
     - webapp_uploads:/app/wwwroot/uploads
 
@@ -68,51 +61,58 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
-    - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    - prometheus:/prometheus 
+    - ./configs/test/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    - prometheus:/prometheus
     depends_on: ["webapp"]
     ports:
     - "9090:9090"
-    networks:
-    - rbc_network
 
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
     environment:
-    - GF_SECURITY_ADMIN_USER=admin 
+    - GF_SECURITY_ADMIN_USER=admin
     - GF_SECURITY_ADMIN_PASSWORD=admin
     volumes:
-    - grafana:/var/lib/grafana 
+    - grafana:/var/lib/grafana
+    - ./configs/test/grafana/provisioning:/etc/grafana/provisioning
+    - ./configs/test/grafana/dashboards:/var/lib/grafana/dashboards
     depends_on: ["prometheus", "loki"]
     ports:
     - "3000:3000"
-    networks:
-    - rbc_network
    
   loki:
     image: grafana/loki:latest
     container_name: loki
     volumes:
     - loki:/loki 
-    - ./test/loki-config.yaml:/etc/loki/local-config.yaml 
+    - ./configs/test/loki/loki-config.yml:/etc/loki/local-config.yaml 
     ports:
     - "3100:3100"
-    networks:
-    - rbc_network
   
   mssql-exporter:
     image: awaragi/prometheus-mssql-exporter
     container_name: mssql_exporter
     environment:
+    - SERVER=sqlserver
     - USERNAME=sa
     - PASSWORD=${MSSQL_SA_PASSWORD}
-    depends_on: ["sqlserver"]
     ports:
-    - "9182:9182"
-    networks:
-    - rbc_network
-  
+    - "4000:4000"
+    depends_on: ["sqlserver"]
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+    - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+    - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+    ports:
+    - "5672:5672"
+    - "15672:15672"
+    volumes:
+    - rabbitmq_data:/var/lib/rabbitmq
+
 
 volumes:
   sqlserver_data:
@@ -120,7 +120,4 @@ volumes:
   prometheus:
   grafana:
   loki:
-
-networks:
-  rbc_network:
-    driver: bridge
+  rabbitmq_data:

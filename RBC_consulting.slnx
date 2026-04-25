@@ -4,25 +4,45 @@
     <File Path=".env" />
     <File Path=".dockerignore" />
     <File Path="docker-compose.test.yml" />
+    <File Path="src/webapp/WebApp/Dockerfile" />
   </Folder>
   <Folder Name="/Docker/Database/">
     <File Path="schema.sql" />
     <File Path="seed.sql" />
+  </Folder>
+  <Folder Name="/Docker/Observability/">
+    <File Path="test/prometheus/prometheus.yml" />
+    <File Path="test/loki/loki-config.yml" />
+    <File Path="test/grafana/provisioning/datasources/datasources.yml" />
   </Folder>
   <Folder Name="/Documentation/">
     <File Path="README.md" />
     <File Path="REFERENCES.md" />
   </Folder>
   <File Path=".gitignore" />
-  <Folder Name="/src/">
+  <File Path=".gitattributes" />
+  <Folder Name="/Solution Items/">
     <File Path="Directory.Packages.props" />
-    <Project Path="src/RBC_consulting.Api/RBC_consulting.csproj" />
-    <Project Path="src/RBC_consulting.Application/RBC_consulting.Application.csproj" />
-    <Project Path="src/RBC_consulting.Contracts/RBC_consulting.Contracts.csproj" />
-    <Project Path="src/RBC_consulting.Domain/RBC_consulting.Domain.csproj" />
-    <Project Path="src/RBC_consulting.Infrastructure/RBC_consulting.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/GitHub/">
+    <File Path=".github/workflows/tests.yml" />
+  </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/FileService/">
+    <Project Path="src/fileservice/FileService.IntegrationContracts/FileService.IntegrationContracts.csproj" Id="8ab70596-dd29-4d8f-93c1-57d9b48ac68e" />
   </Folder>
   <Folder Name="/src/Tests/">
     <Project Path="src/Tests/Architecture.Tests/Architecture.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/WebApp/">
+    <Project Path="src/webapp/WebApp.Application/WebApp.Application.csproj" />
+    <Project Path="src/webapp/WebApp.Contracts/WebApp.Contracts.csproj" />
+    <Project Path="src/webapp/WebApp.Domain/WebApp.Domain.csproj" />
+    <Project Path="src/webapp/WebApp/WebApp.Api.csproj" />
+  </Folder>
+  <Folder Name="/src/WebApp/Infrastrcuture/">
+    <Project Path="src/webapp/WebApp.Infrastrcture.Grpc/WebApp.Infrastrcture.Grpc.csproj" Id="ddd16b4a-c757-4aff-9368-d220cef82dca" />
+    <Project Path="src/webapp/WebApp.Infrastructure.Bus/WebApp.Infrastructure.Bus.csproj" Id="00220ac9-9047-457d-b0b1-27bde7c5862e" />
+    <Project Path="src/webapp/WebApp.Infrastructure/WebApp.Infrastructure.csproj" />
   </Folder>
 </Solution>

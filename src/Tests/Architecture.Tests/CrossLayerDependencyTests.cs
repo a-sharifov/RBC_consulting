@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using FluentAssertions;
 using NetArchTest.Rules;
 
@@ -6,14 +6,13 @@ namespace Architecture.Tests;
 
 public sealed class CrossLayerDependencyTests
 {
-    private static readonly Assembly DomainAssembly = RBC_consulting.Domain.AssemblyReference.Assembly;
+    private static readonly Assembly DomainAssembly = WebApp.Domain.AssemblyReference.Assembly;
 
     [Theory]
-    [InlineData("RBC_consulting.Infrastructure")]
-    [InlineData("RBC_consulting.Contracts")]
-    [InlineData("RBC_consulting.Application")]
-    [InlineData("RBC_consulting.Api")]
-
+    [InlineData("WebApp.Infrastructure")]
+    [InlineData("WebApp.Contracts")]
+    [InlineData("WebApp.Application")]
+    [InlineData("WebApp")]
     public void Domain_ShouldNotDependOn(string layer)
     {
         var result = Types.InAssembly(DomainAssembly)
@@ -25,11 +24,11 @@ public sealed class CrossLayerDependencyTests
     }
 
     [Theory]
-    [InlineData("RBC_consulting.Application")]
-    [InlineData("RBC_consulting.Api")]
+    [InlineData("WebApp.Application")]
+    [InlineData("WebApp")]
     public void Infrastructure_ShouldDependOn(string layer)
     {
-        var result = Types.InAssembly(RBC_consulting.Infrastructure.AssemblyReference.Assembly)
+        var result = Types.InAssembly(WebApp.Infrastructure.AssemblyReference.Assembly)
             .ShouldNot()
             .HaveDependencyOn(layer)
             .GetResult();
@@ -38,10 +37,10 @@ public sealed class CrossLayerDependencyTests
     }
 
     [Theory]
-    [InlineData("RBC_consulting.Infrastructure")]
+    [InlineData("WebApp.Infrastructure")]
     public void Application_ShouldDependOn(string layer)
     {
-        var result = Types.InAssembly(RBC_consulting.Application.AssemblyReference.Assembly)
+        var result = Types.InAssembly(WebApp.Application.AssemblyReference.Assembly)
             .ShouldNot()
             .HaveDependencyOn(layer)
             .GetResult();
@@ -49,11 +48,11 @@ public sealed class CrossLayerDependencyTests
     }
 
     [Theory]
-    [InlineData("RBC_consulting.Application")]
-    [InlineData("RBC_consulting.Infrastructure")]
+    [InlineData("WebApp.Application")]
+    [InlineData("WebApp.Infrastructure")]
     public void Contracts_ShouldNotDependOn(string layer)
     {
-        var result = Types.InAssembly(RBC_consulting.Contracts.AssemblyReference.Assembly)
+        var result = Types.InAssembly(WebApp.Contracts.AssemblyReference.Assembly)
             .ShouldNot()
             .HaveDependencyOn(layer)
             .GetResult();

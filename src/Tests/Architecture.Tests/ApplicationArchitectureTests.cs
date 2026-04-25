@@ -1,13 +1,13 @@
-﻿using System.Reflection;
+using System.Reflection;
 using FluentAssertions;
 using NetArchTest.Rules;
-using RBC_consulting.Application.Common.CQRS;
+using WebApp.Application.Common.CQRS;
 
 namespace Architecture.Tests;
 
 public sealed class ApplicationArchitectureTests
 {
-    private static readonly Assembly ApplicationAssembly = RBC_consulting.Application.AssemblyReference.Assembly;
+    private static readonly Assembly ApplicationAssembly = WebApp.Application.AssemblyReference.Assembly;
 
     [Fact]
     public void Commands_ShouldHaveNameEndingWithCommand()

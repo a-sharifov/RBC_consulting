@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+
+// не обязательно возвращзать bool, оставил для удобства чтоб удобно было версионировать
+service FileService {
+	rpc DownloadFile (DownloadFileRequest) returns (stream DownloadFileResponse);
+	rpc DeleteFile (DeleteFileRequest) returns (DeleteFileResponse);
+	rpc UploadFile (stream UploadFileRequest) returns (UploadFileResponse);
+}
+
+message DownloadFileRequest {
+	string path = 1;
+}
+
+message DownloadFileResponse {
+	bytes content = 1;
+}
+
+message DeleteFileRequest {
+	string path = 1;
+}
+
+message DeleteFileResponse {
+	bool success = 1;
+}
+
+message UploadFileRequest {
+	string path = 1;
+	bytes content = 2;
+}
+
+message UploadFileResponse {
+	bool success = 1;
+}

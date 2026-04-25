@@ -17,11 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\RBC_consulting.Api\RBC_consulting.csproj" />
-    <ProjectReference Include="..\..\RBC_consulting.Application\RBC_consulting.Application.csproj" />
-    <ProjectReference Include="..\..\RBC_consulting.Contracts\RBC_consulting.Contracts.csproj" />
-    <ProjectReference Include="..\..\RBC_consulting.Domain\RBC_consulting.Domain.csproj" />
-    <ProjectReference Include="..\..\RBC_consulting.Infrastructure\RBC_consulting.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\webapp\WebApp\WebApp.Api.csproj" />
+    <ProjectReference Include="..\..\webapp\WebApp.Application\WebApp.Application.csproj" />
+    <ProjectReference Include="..\..\webapp\WebApp.Contracts\WebApp.Contracts.csproj" />
+    <ProjectReference Include="..\..\webapp\WebApp.Domain\WebApp.Domain.csproj" />
+    <ProjectReference Include="..\..\webapp\WebApp.Infrastructure\WebApp.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
