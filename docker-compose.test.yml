@@ -5,9 +5,9 @@ services:
     env_file:
     - .env
     environment:
-    - ACCEPT_EULA=${ACCEPT_EULA}
-    - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
-    - MSSQL_PID=${MSSQL_PID}
+      ACCEPT_EULA: ${ACCEPT_EULA}
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+      MSSQL_PID: ${MSSQL_PID}
     ports:
     - "1433:1433"
     volumes:
@@ -23,7 +23,7 @@ services:
     - ./configs/test/sql/schema.sql:/scripts/schema.sql
     - ./configs/test/sql/seed.sql:/scripts/seed.sql
     environment:
-    - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
     entrypoint: /bin/bash -c "
       echo 'Waiting for SQL Server...';
       for i in {1..50}; do
@@ -48,9 +48,9 @@ services:
     env_file:
     - .env
     environment:
-    - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-    - ASPNETCORE_URLS=${ASPNETCORE_URLS}
-    - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=${DB_NAME};User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_HTTP_PORTS: 80 
+      ConnectionStrings__DefaultConnection=Server: sqlserver;Database=${DB_NAME};User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;
     ports:
     - "5000:80"
     depends_on: [sqlserver, mssql-init]
@@ -71,8 +71,8 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     environment:
-    - GF_SECURITY_ADMIN_USER=admin
-    - GF_SECURITY_ADMIN_PASSWORD=admin
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
     volumes:
     - grafana:/var/lib/grafana
     - ./configs/test/grafana/provisioning:/etc/grafana/provisioning
@@ -94,9 +94,9 @@ services:
     image: awaragi/prometheus-mssql-exporter
     container_name: mssql_exporter
     environment:
-    - SERVER=sqlserver
-    - USERNAME=sa
-    - PASSWORD=${MSSQL_SA_PASSWORD}
+      SERVER: sqlserver
+      USERNAME: sa
+      PASSWORD: ${MSSQL_SA_PASSWORD}
     ports:
     - "4000:4000"
     depends_on: ["sqlserver"]
@@ -105,11 +105,8 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     environment:
-    - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
-    - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
-    ports:
-    - "5672:5672"
-    - "15672:15672"
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
     volumes:
     - rabbitmq_data:/var/lib/rabbitmq
 
