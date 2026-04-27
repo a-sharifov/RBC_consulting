@@ -12,13 +12,9 @@ namespace WebApp.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, string webRootPath)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<FileSettings>(opts =>
-        {
-            configuration.GetSection(FileSettings.SectionName).Bind(opts);
-            opts.WebRootPath = webRootPath;
-        });
+        services.Configure<FileSettings>(configuration.GetSection(FileSettings.SectionName));
         services.Configure<DatabaseSettings>(configuration.GetSection(DatabaseSettings.SectionName));
 
         services.AddScoped<ICommandEmployeeRepository, CommandEmployeeRepository>();

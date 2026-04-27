@@ -7,13 +7,13 @@
     <File Path="src/webapp/WebApp/Dockerfile" />
   </Folder>
   <Folder Name="/Docker/Database/">
-    <File Path="schema.sql" />
-    <File Path="seed.sql" />
+    <File Path="configs/test/sql/schema.sql" />
+    <File Path="configs/test/sql/seed.sql" />
   </Folder>
   <Folder Name="/Docker/Observability/">
-    <File Path="test/prometheus/prometheus.yml" />
-    <File Path="test/loki/loki-config.yml" />
-    <File Path="test/grafana/provisioning/datasources/datasources.yml" />
+    <File Path="configs/test/prometheus/prometheus.yml" />
+    <File Path="configs/test/loki/loki-config.yml" />
+    <File Path="configs/test/grafana/provisioning/datasources/datasources.yml" />
   </Folder>
   <Folder Name="/Documentation/">
     <File Path="README.md" />

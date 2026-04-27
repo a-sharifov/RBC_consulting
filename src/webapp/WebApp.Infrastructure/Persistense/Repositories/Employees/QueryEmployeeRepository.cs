@@ -93,7 +93,7 @@ internal sealed class QueryEmployeeRepository(
         return Result.Success(new PagedList<EmployeeProjection>(items, totalCount, pageNumber, pageSize));
     }
 
-    public async Task<Result<IEnumerable<EmployeeProjection>>> GetAllForExportAsync(
+    public async Task<Result<IEnumerable<EmployeeExportProjection>>> GetForExportPdfAsync(
         string? searchTerm = null,
         string? sortBy = null,
         string? sortDir = null)
@@ -106,12 +106,12 @@ internal sealed class QueryEmployeeRepository(
         var orderClause = BuildOrderClause(sortBy, sortDir);
 
         var sql = $@"
-            SELECT EmployeeID as Id, FullName, Position, Department, HireDate, Email, Phone, Salary, FilePath, CreatedAt, CASE WHEN FilePath IS NOT NULL AND FilePath <> '' THEN 1 ELSE 0 END as HasFile
-            FROM Employees
+            SELECT EmployeeID as Id, FullName, Position, Department, HireDate, Email, Phone, Salary
+            FROM vw_EmployeesForExport
             {whereClause}
             {orderClause}";
 
-        var items = await connection.QueryAsync<EmployeeProjection>(sql, parameters);
+        var items = await connection.QueryAsync<EmployeeExportProjection>(sql, parameters);
         return Result.Success(items.AsEnumerable());
     }
 

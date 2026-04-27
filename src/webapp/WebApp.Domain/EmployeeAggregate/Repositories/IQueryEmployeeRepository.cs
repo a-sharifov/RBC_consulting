@@ -17,7 +17,7 @@ public interface IQueryEmployeeRepository
         string? sortBy = null,
         string? sortDir = null);
 
-    public Task<Result<IEnumerable<EmployeeProjection>>> GetAllForExportAsync(
+    public Task<Result<IEnumerable<EmployeeExportProjection>>> GetForExportPdfAsync(
         string? searchTerm = null,
         string? sortBy = null,
         string? sortDir = null);

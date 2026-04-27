@@ -1,4 +1,4 @@
-namespace WebApp.DTOs;
+namespace WebApp.Api.DTOs;
 
 public sealed record CreateEmployeeDto(
     string FullName,

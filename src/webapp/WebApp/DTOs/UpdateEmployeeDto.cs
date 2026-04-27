@@ -1,4 +1,4 @@
-namespace WebApp.DTOs;
+namespace WebApp.Api.DTOs;
 
 public sealed record UpdateEmployeeDto(
     string FullName,

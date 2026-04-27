@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApp.Domain.Common.Errors;
 using WebApp.Domain.Common.Results;
 
-namespace WebApp.Controllers;
+namespace WebApp.Api.Controllers;
 
 public abstract class ApiController : ControllerBase
 {

@@ -14,9 +14,9 @@ internal sealed class FileService : IFileService
     {
         _settings = fileSettings.Value;
         _logger = logger;
-        _uploadFolder = Path.Combine(_settings.WebRootPath, _settings.UploadFolderName);
+        _uploadFolder = Path.Combine(AppContext.BaseDirectory, _settings.UploadFolderName);
 
-        if (!string.IsNullOrEmpty(_settings.WebRootPath) && !Directory.Exists(_uploadFolder))
+        if (!Directory.Exists(_uploadFolder))
             Directory.CreateDirectory(_uploadFolder);
     }
 
@@ -28,20 +28,14 @@ internal sealed class FileService : IFileService
 
         var uniqueFileName = $"{Guid.NewGuid()}{extension}";
         var relativePath = $"{_settings.UploadFolderName}/{uniqueFileName}";
+        var fullPath = Path.Combine(_uploadFolder, uniqueFileName);
 
         using var ms = new MemoryStream();
         await fileStream.CopyToAsync(ms);
         var blob = ms.ToArray();
 
-        try
-        {
-            await System.IO.File.WriteAllBytesAsync(Path.Combine(_uploadFolder, uniqueFileName), blob);
-            _logger.LogInformation("File saved to disk: {RelativePath}", relativePath);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Failed to write file to disk, blob stored in DB only: {FileName}", uniqueFileName);
-        }
+        await System.IO.File.WriteAllBytesAsync(fullPath, blob);
+        _logger.LogInformation("File saved: {RelativePath}", relativePath);
 
         return new SavedFile(blob, relativePath);
     }
@@ -51,19 +45,12 @@ internal sealed class FileService : IFileService
         if (string.IsNullOrWhiteSpace(filePath))
             return Task.CompletedTask;
 
-        var fullPath = Path.Combine(_settings.WebRootPath, filePath);
+        var fullPath = Path.Combine(AppContext.BaseDirectory, filePath);
         if (!System.IO.File.Exists(fullPath))
             return Task.CompletedTask;
 
-        try
-        {
-            System.IO.File.Delete(fullPath);
-            _logger.LogInformation("File deleted from disk: {FilePath}", filePath);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Failed to delete file from disk: {FilePath}", filePath);
-        }
+        System.IO.File.Delete(fullPath);
+        _logger.LogInformation("File deleted: {FilePath}", filePath);
 
         return Task.CompletedTask;
     }
@@ -73,10 +60,10 @@ internal sealed class FileService : IFileService
         if (string.IsNullOrWhiteSpace(filePath))
             return null;
 
-        var fullPath = Path.Combine(_settings.WebRootPath, filePath);
+        var fullPath = Path.Combine(AppContext.BaseDirectory, filePath);
         if (!System.IO.File.Exists(fullPath))
         {
-            _logger.LogDebug("File not found on disk, will fall back to DB: {FilePath}", filePath);
+            _logger.LogDebug("File not found on disk, falling back to DB: {FilePath}", filePath);
             return null;
         }
 

@@ -1,12 +1,16 @@
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using WebApp.Contracts.Pdf;
+using PdfDocument = WebApp.Contracts.Pdf.PdfDocument;
 
 namespace WebApp.Infrastructure.Pdf;
 
 internal class PdfService : IPdfService
 {
-    public Task<byte[]> GenerateEmployeesPdfAsync(IEnumerable<EmployeePdfRow> rows)
+    private const string PdfContentType = "application/pdf";
+    private const string DefaultFont = FontFactory.HELVETICA_BOLD;
+
+    public Task<PdfDocument> GenerateEmployeesPdfAsync(IEnumerable<EmployeePdfRow> rows)
     {
         using var memoryStream = new MemoryStream();
         var document = new Document(PageSize.A4.Rotate(), 25, 25, 30, 30);
@@ -14,9 +18,9 @@ internal class PdfService : IPdfService
 
         document.Open();
 
-        var titleFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18);
-        var headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10);
-        var cellFont = FontFactory.GetFont(FontFactory.HELVETICA, 9);
+        var titleFont = FontFactory.GetFont(DefaultFont, 18);
+        var headerFont = FontFactory.GetFont(DefaultFont, 10);
+        var cellFont = FontFactory.GetFont(DefaultFont, 9);
         var footerFont = FontFactory.GetFont(FontFactory.HELVETICA_OBLIQUE, 8);
 
         document.Add(new Paragraph("Detailed Employee Report", titleFont)
@@ -31,14 +35,14 @@ internal class PdfService : IPdfService
             SpacingAfter = 15
         });
 
-        var table = new PdfPTable(9)
+        var table = new PdfPTable(8)
         {
             WidthPercentage = 100,
             SpacingBefore = 10,
             SpacingAfter = 10
         };
 
-        table.SetWidths([8f, 15f, 12f, 12f, 10f, 15f, 12f, 10f, 12f]);
+        table.SetWidths([8f, 17f, 13f, 13f, 11f, 17f, 13f, 11f]);
 
         AddHeaderCell(table, "ID", headerFont);
         AddHeaderCell(table, "Full Name", headerFont);
@@ -48,7 +52,6 @@ internal class PdfService : IPdfService
         AddHeaderCell(table, "Email", headerFont);
         AddHeaderCell(table, "Phone", headerFont);
         AddHeaderCell(table, "Salary", headerFont);
-        AddHeaderCell(table, "Created At", headerFont);
 
         var rowList = rows.ToList();
         foreach (var row in rowList)
@@ -61,7 +64,6 @@ internal class PdfService : IPdfService
             AddCell(table, row.Email ?? "", cellFont);
             AddCell(table, row.Phone ?? "", cellFont);
             AddCell(table, row.Salary is null ? "$0.00" : row.Salary.Value.ToString("C"), cellFont);
-            AddCell(table, row.CreatedAt.ToString("yyyy-MM-dd HH:mm"), cellFont);
         }
 
         document.Add(table);
@@ -77,7 +79,8 @@ internal class PdfService : IPdfService
         document.Close();
         writer.Close();
 
-        return Task.FromResult(memoryStream.ToArray());
+        var fileName = $"Employees_{DateTime.Now:yyyyMMdd}.pdf";
+        return Task.FromResult(new PdfDocument(memoryStream.ToArray(), PdfContentType, fileName));
     }
 
     private static void AddHeaderCell(PdfPTable table, string text, Font font)

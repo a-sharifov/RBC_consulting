@@ -10,7 +10,6 @@ GO
 USE CompanyDB;
 GO
 
--- Drop existing objects if they exist (for clean setup)
 IF OBJECT_ID('sp_SearchEmployees', 'P') IS NOT NULL
     DROP PROCEDURE sp_SearchEmployees;
 GO
@@ -23,9 +22,6 @@ IF OBJECT_ID('Employees', 'U') IS NOT NULL
     DROP TABLE Employees;
 GO
 
--- ================================================
--- Create Employees Table
--- ================================================
 CREATE TABLE Employees (
     EmployeeID      INT IDENTITY(1,1) PRIMARY KEY,
     FullName        NVARCHAR(100) NOT NULL,
@@ -50,7 +46,6 @@ CREATE PROCEDURE sp_SearchEmployees
 AS
 BEGIN
     SET NOCOUNT ON;
-    
     SELECT 
         EmployeeID,
         FullName,
@@ -63,8 +58,7 @@ BEGIN
         FileBlob,
         FilePath,
         CreatedAt
-    FROM 
-        Employees
+    FROM Employees
     WHERE 
         (@term IS NULL OR @term = '' OR
          FullName LIKE '%' + @term + '%' OR
@@ -72,8 +66,7 @@ BEGIN
          Department LIKE '%' + @term + '%' OR
          Email LIKE '%' + @term + '%' OR
          Phone LIKE '%' + @term + '%')
-    ORDER BY 
-        EmployeeID DESC;
+    ORDER BY EmployeeID DESC;
 END
 GO
 
@@ -87,6 +80,5 @@ SELECT
     Email,
     Phone,
     Salary
-FROM 
-    Employees;
+FROM Employees;
 GO

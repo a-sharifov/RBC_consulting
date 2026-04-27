@@ -12,7 +12,7 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration, builder.Environment.WebRootPath ?? string.Empty);
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services
       .AddOpenTelemetry()

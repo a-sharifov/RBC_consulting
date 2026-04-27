@@ -1,13 +1,13 @@
 using FluentValidation;
 using WebApp.Domain.EmployeeAggregate.Enumerations;
 
-namespace WebApp.Application.Employees.Queries.GetAll;
+namespace WebApp.Application.Employees.Queries.ExportPdf;
 
-public sealed class GetAllEmployeesQueryValidator : AbstractValidator<GetAllEmployeesQuery>
+public sealed class ExportEmployeesPdfQueryValidator : AbstractValidator<ExportEmployeesPdfQuery>
 {
     private static readonly string[] ValidSortDirs = ["asc", "desc"];
 
-    public GetAllEmployeesQueryValidator()
+    public ExportEmployeesPdfQueryValidator()
     {
         RuleFor(q => q.SortBy)
             .Must(sortBy => sortBy is null || EmployeeOrderBy.NameExists(sortBy))

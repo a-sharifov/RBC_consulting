@@ -1,7 +1,6 @@
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using WebApp.DTOs;
 using WebApp.Application.Employees.Commands.Delete;
 using WebApp.Application.Employees.Commands.Update;
 using WebApp.Application.Employees.Commands.UploadFile;
@@ -9,16 +8,16 @@ using WebApp.Application.Employees.Commands.ClearFile;
 using WebApp.Application.Employees.Queries.GetById;
 using WebApp.Application.Employees.Queries.GetStatistics;
 using WebApp.Application.Employees.Queries.GetFile;
-using WebApp.Contracts.Pdf;
 using WebApp.Application.Employees.Commands.Create;
 using WebApp.Application.Employees.Queries.GetPaged;
-using WebApp.Application.Employees.Queries.GetAll;
+using WebApp.Application.Employees.Queries.ExportPdf;
+using WebApp.Api.DTOs;
 
-namespace WebApp.Controllers;
+namespace WebApp.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class EmployeesController(ISender sender, IPdfService pdfService) : ApiController
+public class EmployeesController(ISender sender) : ApiController
 {
     [HttpGet]
     public async Task<IActionResult> GetPaginated([FromQuery] GetEmployeesPagedQuery query) =>
@@ -66,20 +65,12 @@ public class EmployeesController(ISender sender, IPdfService pdfService) : ApiCo
         HandleResult(await sender.Send(new ClearEmployeeFileCommand(id)));
 
     [HttpGet("export-pdf")]
-    public async Task<IActionResult> ExportPdf(
-        [FromQuery] string? searchTerm,
-        [FromQuery] string? sortBy,
-        [FromQuery] string? sortDir)
+    public async Task<IActionResult> ExportPdf([FromQuery] ExportEmployeesPdfQuery query)
     {
-        var result = await sender.Send(new GetAllEmployeesQuery(searchTerm, sortBy, sortDir));
-        if (result.IsFailure) return HandleResult(result);
-
-        var rows = result.Value.Select(r => new EmployeePdfRow(
-            r.Id, r.FullName, r.Position, r.Department,
-            r.HireDate, r.Email, r.Phone, r.Salary, r.CreatedAt));
-
-        var pdf = await pdfService.GenerateEmployeesPdfAsync(rows);
-        return File(pdf, "application/pdf", $"Employees_{DateTime.Now:yyyyMMdd}.pdf");
+        var result = await sender.Send(query);
+        return result.IsSuccess
+            ? File(result.Value.Data, result.Value.ContentType, result.Value.FileName)
+            : HandleResult(result);
     }
 
     [HttpGet("statistics")]

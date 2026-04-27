@@ -8,5 +8,4 @@ public sealed record EmployeePdfRow(
     DateTime HireDate,
     string? Email,
     string? Phone,
-    decimal? Salary,
-    DateTime CreatedAt);
+    decimal? Salary);

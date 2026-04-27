@@ -22,15 +22,10 @@ internal sealed class UploadEmployeeFileCommandHandler(
         if (!string.IsNullOrEmpty(employee.FilePath))
             await fileService.DeleteFileAsync(employee.FilePath);
 
-        try
-        {
-            var saved = await fileService.SaveFileAsync(request.FileStream, request.FileName);
-            employee.SetFile(saved.Blob, saved.RelativePath);
-            return await repository.UpdateAsync(employee, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            return Result.Failure(Error.Failure("File.SaveError", ex.Message));
-        }
+
+        // TODO: Перенести в асинхронное сохранение
+        var saved = await fileService.SaveFileAsync(request.FileStream, request.FileName);
+        employee.SetFile(saved.Blob, saved.RelativePath);
+        return await repository.UpdateAsync(employee, cancellationToken);
     }
 }

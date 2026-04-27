@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace WebApp;
+namespace WebApp.Api;
 public class AssemblyReference
 {
     public static Assembly Assembly => typeof(AssemblyReference).Assembly;

@@ -7,3 +7,4 @@
 - [Посмотрел синтаксис proto](https://protobuf.dev/programming-guides/proto3/)
 - [Так как обычно юзаю MassTransit посмотрел документацию Wolverine](https://wolverinefx.net/tutorials/ping-pong.html)
 - [Посмотрел документацию Razor Pages так как обычно работаю с React](https://metanit.com/sharp/razorpages/)
+- [Типы Datetime][https://www.youtube.com/watch?v=pScA9ihW7Q8&msockid=0ae57ad6420511f1b3178830bd5a4838]
